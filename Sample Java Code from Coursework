@@ -1,0 +1,66 @@
+##UI CONTROLS AND DICE PROBLEMS
+
+var die1;
+var die2;
+var die3;
+onEvent("button_roll", "click", function( ) {
+  setText("label_die1", randomNumber(1, 6));
+  setText("label_die2", randomNumber(1, 6));
+  setText("label_die3", randomNumber(1, 6));
+  console.log(getNumber("label_die1"));
+  var die1 = getNumber("label_die1");
+  var die2 = getNumber("label_die2");
+  var die3 = getNumber("label_die3");
+  if (getNumber("label_die1") == (getNumber("label_die2")) & (getNumber("label_die1") == getNumber("label_die3")) & getNumber("label_die2") == getNumber("label_die3")) {
+    setNumber("label_ScoreValue", 50);
+  } else if (getNumber("label_die1") == (getNumber("label_die2")) || (getNumber("label_die1") == getNumber("label_die3")) || getNumber("label_die2") == getNumber("label_die3"))  {
+    setNumber("label_ScoreValue", 25);
+  } else {
+    setNumber("label_ScoreValue", (die1 + die2) + die3);
+  }
+});
+
+#
+button("button1", "choose a number between 1 and 100");
+setPosition("button1", 100, 175, 100, 100);
+var random = randomNumber(1, 100);
+onEvent("button1", "click", function(event ) {
+  var choice = promptNum("Enter a value");
+  textInput("userchoice", "Your number" + choice);
+  setPosition("userchoice", 143, 37, 200, 100);
+  write("random number" + random);
+  for (var r = randomNumber(1, 100); r < choice; r++) {
+    write("random number" + r);
+    var r = randomNumber(1, 100);
+  }
+});
+
+#
+var dice1 = randomNumber(1, 6);
+var dice2 = randomNumber(1, 6);
+write(("Level 1. You rolled" + dice1) + " & " + dice2);
+var d2 = dice2;
+var d1 = dice1;
+while ((d1 != d2)) {
+   var d1 = randomNumber(1,6);
+   var d2 = randomNumber(1,6);
+ }
+write((("Level 2" + "Match") + " " + d2) + " " + d1);
+var trials = 0;
+for (var match = 1; match < 10; match++) {
+  var dd1 = randomNumber(1,6);
+  var dd2 = randomNumber(1,6);
+  if (dd1 == dd2) {
+     var trials = trials + 1;
+     write(("For Trial #" + trials + "We got a match" + dd1) + dd2);
+   } else {
+    while ((dd1 != dd2)) {
+      var dd1 = randomNumber(1,6);
+      var dd2 = randomNumber(1,6);
+      var trials = trials + 1;
+    }
+    write((("For Trial #" + trials) + "We got a match" + dd1) + dd2);
+  }
+  var match = match + 1;
+}
+write(("Level 4. It took" + trials) + "trials to get 5 matches!");
