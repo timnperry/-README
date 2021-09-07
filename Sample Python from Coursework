@@ -1,0 +1,300 @@
+#Problem 1: Building an Adventure Game
+def adventureGame():
+  showIntroduction()
+  room = "Stoop"
+  Exit = "Exit"
+  while not (room == "Exit"):
+    showRoom(room)
+    door = str(requestString("What door do you want to enter?"))
+    room = pickRoom(door, room)
+    
+def showIntroduction():
+  print "Welcome to Bill Cosby's House..."
+  print "the most allegedly creepy house in"
+  print "In All the Land"
+  print "Your mission, should you choose to accept it"
+  print "is to provide legal Council for Mr.Cosby in this"
+  print "very confusing time in American History."
+  print "You must search The Cosby Home to find evidence"
+  print "that he is innocent!"
+  areYouReady()
+  print "======================================================"
+  
+def showIntroduction2():
+  print "You will start at the front doors, but this is a game of choice..."
+  print "so you will choose which which door to pass through."
+  print "All of the doors are numbered, type in the number of the door you want enter"
+  print "BUT naturally you have to be in a room connected to that door to enter so..."
+  print "Look at the Map for reference"
+  print "To exit at any time, type Exit when it asks what door you want to enter"
+  print "* Type all of your responses as numbers or if they are words, with the first letter being capitalized"
+  print "And if you're truly brave enough, make sure you import the random libary."
+  print "====================================================================="
+  showStoop()
+  
+def areYouReady():
+  mission = requestString("Will you defend Bill Cosby?(Yes or No)")
+  if mission == "Yes" or mission == "yes":
+    print "===================================================="
+    print "Really!? Alright cool, nice. This might work then."
+  if mission == "No" or mission =="no":
+    printNow("Hey, we don't blame you. Half of America would agree")
+    showExit1()   
+    
+def showRoom(room):
+  room = requestString("What room are you in")
+  if room == "Den": 
+    showDen()
+  if room == "Kitchen":
+    showKitchen()
+  if room == "Dining Room":
+    showDiningRoom()
+  if room == "Living Room":
+    showLivingRoom()
+  if room == "Basement":
+    showBasement()
+  if room == "Stoop":
+    showStoop()
+  if room == "Exit":
+    showExit2()
+    
+def pickRoom(door,room):
+  Exit = "Exit"
+  if door == "Exit":
+    showExit2()
+    return Exit
+  if room == "Stoop":
+    if door == str(1):
+      showDen()
+    if door == str(2):
+      showBasement()
+  if room == "Den":
+    if door == str(1):
+      showStoop()
+    if door == str(3):
+      showKitchen()
+    if door == str(4):
+      showBasement()
+    if door == str(5) or door == str(6):
+      showDiningRoom()
+  if room == "Kitchen":
+    if door == str(3):
+      showDen()
+    if door == str(7):
+      showLivingRoom()
+  if room == "Dining Room":
+    if door == str(8):
+      showBasement()
+    if door == str(5) or door == str(6):
+      showDen()
+  if room == "Basement":
+    if door == str(9):
+      showStoop()
+
+def showStoop():
+  print "Once again you find yourself at the threshold fo your destiny"
+  print "What will you do?"
+  print "Walk up the steps and go through the door on the left"
+  print "or the right?"
+  print "============================================================"
+def showDen():
+  print "*Inhales* Ahh you smell that?"
+  print "That's the smell of guilt probably. Gross"
+  print "Other than that, there is nothing here but folded sweaters"
+  print "nothing thats gonna help with the case."
+  print "I think it's time to move on"
+  print "============================================================"
+def showKitchen():
+  print "Wow, this kitchen is nice!"
+  print "Hey what are all those white pills on the counter?"
+  print "Whatever they are, they won't help get Cosby off the hook"
+  print "but we better move on, I'm getting light headed just being in here"
+  print "============================================================"
+def showLivingRoom():
+  print "Wow..."
+  print "This room is quite literally empty."
+  print "Oh. Wait"
+  print "If thats what I think it is..."
+  print "Let's leave this room and never come back."
+  print "..."
+  print "I think I may just call my mom.."
+  print "just to..just to tell her I love her"
+  print "Can we please leave this room??" 
+  print "============================================================"
+  ghost()
+def showDiningRoom():
+  print "It seems the family just had a meal"
+  print "A meal consisting entirely of pudding pops."
+  print "We might be able to use this, let the jury remember what kind of person he used to represent"
+  print "or perhaps even the insanity plea"
+  print "Lets just leave it here for now and move on."
+  print "============================================================"
+def showBasement():
+  print "Seems I've fallen through some type of trap door"
+  print "It's dark. Why aren't there windows here?" 
+  print "There are A Lot of chains down here"
+  print "And Leather"
+  print "..."
+  print "We should be going now."   
+  print "============================================================"
+  ghost()
+def showExit1():
+  print "if that really is your choice, then so be it"
+  return "Exit"
+  print "============================================================"
+def showExit2():
+  print "Welcome to the alternate ending"
+  print "If you've made it this far and haven't gotten the joke"
+  print "or you just don't think it's funny, then"
+  print "..."
+  print "My bad."
+  print "BUT if you did get the joke, I hope I cold at least make you smile"
+  print "Because my guess is that Bill hasn't been able to do that in a while."
+  print "Fin"
+  return "Exit"
+  print "============================================================"
+      
+def ghost():
+  phrases = ["Get Out!", "Pudding Pops!", "Rudyyyyyy...","Help Us!","I did't do it!"]
+  print "*Faintly you hear* <<< " +random.choice(phrases)+ ">>> ...A Ghost?"
+  print "============================================================"
+  
+# USING PYTHON TO MANIPULATE SOUND FILES
+def combination(sound1,sound2,sound3):
+  len1 = getLength(sound1)
+  len2 = getLength(sound2)-1
+  len3 = getLength(sound3)
+  combo1 = len1+len2
+  canvas = makeEmptySound(len1+len2+len3)
+  sourceIndex = len2
+  for index in range(len1):
+    v = getSampleValueAt(sound1,index)
+    setSampleValueAt(canvas,index,v*2)
+  for index in range(len1,len1+len2):
+    v = getSampleValueAt(sound2,sourceIndex)
+    setSampleValueAt(canvas,index,v)
+    sourceIndex = sourceIndex -1
+  for index in range(len1+len2-1,len3-1+len2):
+    v = getSampleValueAt(sound3,index)
+    setSampleValueAt(canvas,index,v)
+  explore(canvas)
+  return canvas
+  
+  def tunedOut(sound1,sound2):
+  len1 = getLength(sound1)/2
+  len2 = getLength(sound2)
+  canvas = makeEmptySound(len1+len2)
+  for index in range(len1):
+    v = getSampleValueAt(sound1,index)
+    setSampleValueAt(canvas,index,v)
+  for index in range(len1-1,len1+len2+len2):
+    v2 = getSampleValueAt(sound2,index)
+    setSampleValueAt(canvas,index,v)
+  explore(canvas)
+  return canvas
+
+## PRACTICE WITH LISTS AND INDEXING
+#Problem 1
+def randomWordSort(file):
+  filo = open(getMediaPath() + str(file),"rt")
+  contents = filo.read()
+  filo.close()
+  list1 = contents.split()
+  list.sort(list1)
+  return list1
+  
+#Problem 2
+def linearSearchTime(word):
+  start = time.clock()
+  list = randomWordSort("RandomWords.txt")
+  for index in list:
+    if index == word:
+      end = time.clock()
+      print "Item found, time:" + str(end - start)
+      return
+  end = time.clock()    
+  print  "Item not found, time:" + str(end-start)
+  return
+      
+#Problem 3
+def binarySearchTime(word):
+  import time
+  start = 0
+  time1 = time.clock()
+  list = randomWordSort("RandomWords.txt")
+  end = len(list)-1
+  while start <= end:
+    checkpoint = int((start+end)/2.0)
+    if list[checkpoint] == word:
+      time2 = time.clock()
+      time = (time2-time1)
+      print word + " was found in " + str(time) + " seconds"
+      return
+    if list[checkpoint] < word:
+      start = checkpoint + 1
+    if list[checkpoint] > word:
+      end = checkpoint -1
+  time2 = int(time.clock())
+  time = (time2-time1)
+  print word + " was NOT found in " + str(time) + " seconds"
+
+
+## PRACTICE MANIPULATING TURTLES, RICK AND MORTY STYLE
+from time import sleep
+import random
+#Problem 2
+def animateTurtles():
+  MHC = makeWorld(1920,1080)
+  pic = makePicture(getMediaPath()+"R&M Background.jpg")
+  t1 = makeTurtle(MHC)
+  t2 = makeTurtle(MHC)
+  t3 = makeTurtle(MHC)
+  t4 = makeTurtle(MHC)
+  t5 = makeTurtle(MHC)
+  t6 = makeTurtle(MHC)
+  penUp(t1)
+  penUp(t2)
+  penUp(t3)
+  penUp(t4)
+  penUp(t5)
+  penUp(t6)
+  moveTo(t1,0,0)
+  pic = makePicture("R&M Background.jpg")
+  drop(t1,pic)
+  moveTo(t1,370,486)
+  moveTo(t2,586,213)
+  moveTo(t3,909,97)
+  moveTo(t4,694,429)
+  moveTo(t5,1407,398)
+  moveTo(t6,1698,276)
+  penDown(t1)
+  penDown(t2)
+  penDown(t3)
+  penDown(t4)
+  penDown(t5)
+  penDown(t6)
+  play(makeSound("Rick_and_Morty.wav"))
+  for x in range(150):
+    forward(t1,5+x)
+    forward(t2,5+x)
+    forward(t3,5+x)
+    t5.forward(5+x)
+    t6.forward(5+x)
+    turn(t1,45)
+    turn(t2,45)
+    turn(t3,45)
+    t5.turn(30)
+    t6.turn(30)
+    t1.setColor(orange)
+    t2.setColor(red)
+    t3.setColor(green)
+    t5.setColor(green)
+    t6.setColor(orange)
+    sleep(0.1)
+  for x in range(1000):
+    t4.backward(5+x)
+    t4.turn(60)
+    t4.forward(4+x)
+    t4.turn(120)
+    t4.setColor(gray)
+    sleep(0.01)
