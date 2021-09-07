@@ -1,0 +1,87 @@
+## The following code is written in R Language and was used as the data analysis for my group's capstone project
+## We worked with the center for teaching and learning to uncover insights into how students were adjusting to online schooling during the pandemic with focus on mental health and levels of student engagement
+
+#Data Cleaning
+##load dataset using spss format
+library(haven)
+library(dplyr)
+path = file.path("C:/Users/swjun/Downloads", "Course Design, Engagement, Mental Health_April 15, 2021_10.42.sav")
+dataset = read_sav(path)
+​
+## Exclusion Criteria
+###Remove rows with 'NA' answers
+na.omit(dataset)
+### Delete people who didn't agree to participate in the study
+dataset<- dataset[dataset$Q107 !=2, ]
+### Delete people who didn't pass attention check
+dataset<- dataset[dataset$mh4_3 == 2, ]
+dataset<- dataset[dataset$e2_5 == 3, ]
+dataset<- dataset[dataset$e3_1 == 3, ]
+​
+##calulate EPIC and DASS Scale
+### Replace reverse coded questions with actual value
+cols = c("mh3_3", "mh5_1")
+dataset[ ,cols] = 3 - dataset[ ,cols]
+###Calculate scale scores excluding attention check
+dataset$DASS <- (rowSums(dataset[,c(54:77)], na.rm=TRUE)-2)
+dataset$EPIC <- (rowSums(dataset[,c(78:95)], na.rm=TRUE)-4)
+​
+##Set Variables
+dataset$inperson <- as.factor(dataset$d6)
+dataset$sync <- as.factor(dataset$Q24)
+dataset$async <- as.factor(dataset$Q25)
+dataset$age <- dataset$d4
+​
+#Descriptive Statistics
+summary(age)
+sd(age, na.rm = TRUE)
+summary(inperson)
+sd(inperson, na.rm = TRUE)
+summary(sync)
+sd(sync, na.rm = TRUE)
+summary(async)
+sd(async, na.rm = TRUE)
+summary(EPIC)
+sd(EPIC, na.rm = TRUE)
+summary(DASS)
+sd(DASS, na.rm = TRUE)
+​
+#Data Analysis
+##One-way ANOVA Tests for inperson, synchronous, and asynchronous time and EPIC and DASS survey
+ip.dass <- aov(DASS ~ inperson, data = dataset)
+ip.epic <- aov(EPIC ~ inperson, data = dataset)
+sn.dass <- aov(DASS ~ sync, data = dataset)
+sn.epic <- aov(EPIC ~ sync, data = dataset)
+an.dass <- aov(DASS ~ async, data = dataset)
+an.epic <- aov(EPIC ~ async, data = dataset)
+​
+##Check age as a moderator variable
+dataset$cent_onlinetime  <- scale(async ,center = TRUE , scale = FALSE)
+dataset$cent_age  <- scale(age ,center = TRUE , scale = FALSE)
+lm.zerodass <- lm(DASS ~ 1, data = dataset)
+lm.onedass <- lm(DASS ~ 1 + cent_age + cent_onlinetime, data = dataset)
+lm.twodass <- lm(DASS ~ 1 + cent_age + cent_onlinetime + cent_age*cent_onlinetime, data = dataset)
+lm.zeroepic <- lm(EPIC ~ 1, data = dataset)
+lm.oneepic <- lm(EPIC ~ 1 + cent_age + cent_onlinetime, data = dataset)
+lm.twoepic <- lm(EPIC ~ 1 + cent_age + cent_onlinetime + cent_age*cent_onlinetime, data = dataset)
+​
+anova(lm.zerodass, lm.onedass, lm.twodass)
+anova(lm.zeroepic, lm.oneepic, lm.twoepic)
+​
+summary(lm.twodass)
+summary(lm.twoepic)
+​
+#Visualizing data
+library("ggpubr")
+ggboxplot(dataset, x = "inperson", y = "DASS", color = "black",
+          palette = c("#00AFBB", "#E7B800"))
+ggboxplot(dataset, x = "inperson", y = "EPIC", color = "black",
+          palette = c("#00AFBB", "#E7B800"))
+ggboxplot(dataset, x = "sync", y = "DASS", color = "black",
+          palette = c("#00AFBB", "#E7B800"))
+ggboxplot(dataset, x = "sync", y = "EPIC", color = "black",
+          palette = c("#00AFBB", "#E7B800"))
+ggboxplot(dataset, x = "async", y = "DASS", color = "black",
+          palette = c("#00AFBB", "#E7B800"))
+ggboxplot(dataset, x = "async", y = "EPIC", color = "black",
+          palette = c("#00AFBB", "#E7B800"))
